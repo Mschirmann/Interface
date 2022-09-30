@@ -46,15 +46,16 @@ class DataBase:
         return """
                 CREATE TABLE IF NOT EXISTS os(
 
-                    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                    id INTEGER NOT NULL PRIMARY KEY,
                     status TEXT DEFAULT 'Aberta',
                     created_at DATETIME NOT NULL,
                     closed_at DATETIME,
                     customer TEXT NOT NULL,
                     technical_manager TEXT NOT NULL,
-                    service_start_hour TIME NOT NULL,
-                    service_end_hour TIME NOT NULL,
+                    service_start_dt DATETIME NOT NULL,
+                    service_end_dt DATETIME NOT NULL,
                     service_description TEXT,
+                    service_type TEXT NOT NULL,
                     equip_inventory_number VARCHAR(20),
                     equip_brand TEXT,
                     equip_name TEXT,
@@ -65,7 +66,8 @@ class DataBase:
                     parts_used TEXT,
                     part_type TEXT,
                     part_quantity INTEGER,
-                    part_price FLOAT
+                    part_unit_price FLOAT,
+                    part_total FLOAT
                 );
             """
 
