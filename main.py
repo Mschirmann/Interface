@@ -80,12 +80,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # self.btn_editar.clicked.connect(self.edit_os)
         self.btn_excluir.clicked.connect(self.remove_os)
         self.btn_consultar.clicked.connect(self.list_os)
+        self.btn_sair.clicked.connect(lambda: self.Pages.setCurrentWidget(self.pg_home))
 
-        self.treeWidget.itemClicked.connect(self.onItemClicked)
-
-    def onItemClicked(self):
-        self.selectedItem = self.treeWidget.currentItem()
-        # print(self.selectedItem.text(1))
+        # self.treeWidget.itemClicked.connect(self.onItemClicked)
 
     def subscribe_user(self):
 
@@ -119,7 +116,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def save_os(self):
         num_os = self.txt_num_os.text()
-        status = self.cb_close.text()
+        status = "Fechada" if self.cb_close.isChecked() else "Aberta"
         dt_os = self.dt_emissao.text()
         hr_os = self.dt_horario.text()
         # formatting date to save in database
@@ -179,12 +176,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             part_qtd,
             part_price,
             part_total,
-            num_os,
+            int(num_os),
         )
         # Aqui precisa checar se o num_os já existe, caso existir será feito um update senão um create
         db_conn = self.db_instance.create_connection()
-        Os(db_conn).insert_os(os_data)
+        created_id = Os(db_conn).insert_os(os_data)
         self.db_instance.close_connection(db_conn)
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Warning)
+        msg.setWindowTitle("Nova Ordem de serviço")
+        if created_id[0]:
+            msg.setText(
+                "Ordem de serviço: {} inserida com sucesso!".format(created_id[1])
+            )
+        else:
+            msg.setText("Não foi possível inserir nova Ordem de serviço!")
+        msg.exec()
 
     def list_os(self):
 

@@ -13,9 +13,10 @@ class Os:
             cursor = self.connection.cursor()
             cursor.execute(sql, os_data)
             self.connection.commit()
-        except AttributeError:
-            self.connection.close()
+            return True, cursor.lastrowid
+        except Error as e:
             print("Faça a conexão.")
+            return False, "Erro: " + str(e)
 
     def update_os(self, os_data):
         try:
