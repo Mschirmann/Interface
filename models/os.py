@@ -1,4 +1,5 @@
 from sqlite3 import Error
+import sqlite3
 
 
 class Os:
@@ -60,12 +61,65 @@ class Os:
         except Error as e:
             return "Não foi possível executar a consulta. " + str(e)
 
-    def get_all_os(self, os_id=None):
+    def get_all_os(
+        self,
+        id=None,
+        equip_inventory_number=None,
+        equip_name=None,
+        customer=None,
+        status=None,
+        dt_start=None,
+        dt_end=None,
+    ):
         try:
+            have_filters = (
+                id
+                or equip_inventory_number
+                or equip_name
+                or customer
+                or status
+                or dt_start
+                or dt_end
+            )
             sql = "SELECT * FROM os"
+            if have_filters:
+                sql += " WHERE "
+                if id:
+                    sql += "id=" + id + " AND "
+                if equip_inventory_number:
+                    sql += "equip_inventory_number=" + id + " AND "
+                if equip_name:
+                    sql += "equip_name='" + equip_name + "' AND "
+                if customer:
+                    sql += "customer='" + customer + "' AND "
+                if status:
+                    sql += "status='" + status + "' AND "
+                if dt_start and dt_end:
+                    sql += "created_at BETWEEN '" + dt_start + "' AND '" + dt_end + "'"
+                if sql.endswith(" AND "):
+                    sql = sql[:-5]
+
+            self.connection.row_factory = sqlite3.Row
             cursor = self.connection.cursor()
             cursor.execute(sql)
             results = cursor.fetchall()
-            return list(results)
+            return list(map(lambda x: dict(x), results))
         except Error as e:
             return "Não foi possível executar a consulta. " + str(e)
+
+    def get_os(self, os_id=None):
+        try:
+            sql = "SELECT * FROM os WHERE id=?"
+            self.connection.row_factory = sqlite3.Row
+            cursor = self.connection.cursor()
+            cursor.execute(sql, (os_id,))
+            result = cursor.fetchone()
+            return dict(result)
+        except Error as e:
+            return "Não foi possível executar a consulta. " + str(e)
+
+    def dict_factory(cursor, row):
+        d = {}
+        for idx, col in enumerate(cursor.description):
+            d[col[0]] = row[idx]
+        return d

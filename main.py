@@ -1,5 +1,11 @@
 from os import access
-from PySide2.QtWidgets import QApplication, QMainWindow, QWidget, QMessageBox
+from PySide2.QtWidgets import (
+    QApplication,
+    QMainWindow,
+    QWidget,
+    QMessageBox,
+    QTreeWidgetItem,
+)
 from models.os import Os
 from ui_login import Ui_Form
 from OS_SIMAP_beta import Ui_MainWindow
@@ -55,7 +61,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         if user.lower() == "user":
             self.btn_pg_cadastro.setVisible(False)
-            self.btn_editar.setVisible(False)
+            # self.btn_editar.setVisible(False)
             self.btn_excluir.setVisible(False)
             self.btn_gerar.blockSignals(True)
 
@@ -71,11 +77,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.btn_cadastrar.clicked.connect(self.subscribe_user)
         self.btn_gravar.clicked.connect(self.save_os)
-        self.btn_editar.clicked.connect(
-            self.edit_os
-        )  # ver como passar uma os para preencher os dados no formulario
+        # self.btn_editar.clicked.connect(self.edit_os)
         self.btn_excluir.clicked.connect(self.remove_os)
         self.btn_consultar.clicked.connect(self.list_os)
+
+        self.treeWidget.itemClicked.connect(self.onItemClicked)
+
+    def onItemClicked(self):
+        self.selectedItem = self.treeWidget.currentItem()
+        # print(self.selectedItem.text(1))
 
     def subscribe_user(self):
 
@@ -171,14 +181,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             part_total,
             num_os,
         )
-        # validar data
-        print(dt_hr_os)
         # Aqui precisa checar se o num_os já existe, caso existir será feito um update senão um create
         db_conn = self.db_instance.create_connection()
         Os(db_conn).insert_os(os_data)
         self.db_instance.close_connection(db_conn)
 
     def list_os(self):
+
+        # Get data from form
         num_os = self.txt_num_os_consulta.text()
         equip_inventory = self.txt_num_patrimonio_consulta.text()
         equip_description = self.txt_equipamento_consulta.text()
@@ -187,23 +197,76 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         dt_os_start = self.dt_periodo_consulta.text()
         dt_os_end = self.dateEdit_2.text()
 
+        # validate data
+        num_os = num_os if num_os else None
+        equip_inventory = equip_inventory if equip_inventory else None
+        equip_description = equip_description if equip_description else None
+        customer = customer if customer else None
+        status = status if status else None
+        if dt_os_start:
+            dt_os_start = datetime.strptime(dt_os_start, "%d/%m/%y")
+            dt_os_start = dt_os_start.strftime("%Y-%m-%d %H:%M:%S")
+        else:
+            dt_os_start = None
+        if dt_os_end:
+            dt_os_end = datetime.strptime(dt_os_end, "%d/%m/%y")
+            dt_os_end = dt_os_end.strftime("%Y-%m-%d %H:%M:%S")
+        else:
+            dt_os_end = None
+
+        # Open db connection
         db_conn = self.db_instance.create_connection()
-        os_list = Os(db_conn).get_all_os()
+
+        # Call method to fetch all OS by filter options
+        os_list = Os(db_conn).get_all_os(
+            id=num_os,
+            equip_inventory_number=equip_inventory,
+            equip_name=equip_description,
+            customer=customer,
+            status=status,
+            dt_start=dt_os_start,
+            dt_end=dt_os_end,
+        )
         self.db_instance.close_connection(db_conn)
 
-        print(os_list)
+        # First clear current table then list filtered items
+        self.treeWidget.clear()
+        items = []
+        for os in os_list:
+            os_dt = os["created_at"]
+            os_dt = datetime.strptime(os_dt, "%Y-%m-%d %H:%M:%S")
+            os_dt = os_dt.strftime("%d/%m/%Y")
+            item = QTreeWidgetItem(
+                [
+                    "",
+                    str(os["id"]),
+                    os["customer"],
+                    os["equip_inventory_number"],
+                    os["equip_name"],
+                    os_dt,
+                    os["status"],
+                    str(os["part_total"]),
+                ]
+            )
+            items.append(item)
+        self.treeWidget.insertTopLevelItems(0, items)
 
     def remove_os(self):
         selected_os = self.treeWidget.currentItem()
-        print(selected_os)
-        # db_conn = self.db_instance.create_connection()
-        # Os(db_conn).delete_os(1)
-        # self.db_instance.close_connection(db_conn)
+        os_num = selected_os.text(1)
+        if os_num:
+            db_conn = self.db_instance.create_connection()
+            Os(db_conn).delete_os(os_num)
+            self.db_instance.close_connection(db_conn)
+        self.list_os()
 
     def edit_os(self):
         selected_os = self.treeWidget.currentItem()
-        print(selected_os)
-
+        os_num = selected_os.text(1)
+        if os_num:
+            db_conn = self.db_instance.create_connection()
+            os_instance = Os(db_conn).get_os(os_num)
+            self.db_instance.close_connection(db_conn)
         self.Pages.setCurrentWidget(self.pg_os)
 
 

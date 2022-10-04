@@ -1445,7 +1445,7 @@ QPushButton:hover{
          </rect>
         </property>
         <property name="title">
-         <string>GroupBox</string>
+         <string>Opções de consulta</string>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_15">
          <item>
@@ -1627,8 +1627,8 @@ QPushButton:hover{
          <rect>
           <x>22</x>
           <y>530</y>
-          <width>800</width>
-          <height>71</height>
+          <width>801</width>
+          <height>70</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -1640,25 +1640,19 @@ QPushButton:hover{
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <widget class="QPushButton" name="btn_consultar">
-         <property name="geometry">
-          <rect>
-           <x>645</x>
-           <y>25</y>
-           <width>111</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Microsoft JhengHei</family>
-           <pointsize>9</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton{
+        <layout class="QHBoxLayout" name="horizontalLayout_16">
+         <item>
+          <widget class="QPushButton" name="btn_consultar">
+           <property name="font">
+            <font>
+             <family>Microsoft JhengHei</family>
+             <pointsize>9</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{
 	
 	background-color: rgb(140, 205, 135);
 	color: rgb(255, 255, 255);
@@ -1671,63 +1665,24 @@ QPushButton:hover{
 	color: rgb(0, 100, 150)
 
 }</string>
-         </property>
-         <property name="text">
-          <string>CONSULTAR</string>
-         </property>
-        </widget>
-        <widget class="QWidget" name="layoutWidget">
-         <property name="geometry">
-          <rect>
-           <x>49</x>
-           <y>25</y>
-           <width>158</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_16">
-          <item>
-           <widget class="QPushButton" name="btn_editar">
-            <property name="font">
-             <font>
-              <family>Microsoft JhengHei</family>
-              <pointsize>9</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QPushButton{
-	
-	background-color: rgb(100, 180, 240);
-	color: rgb(255, 255, 255);
-	
-}
-
-QPushButton:hover{
-	
-	background-color: rgb(200, 200, 200);
-	color: rgb(0, 100, 150)
-
-}</string>
-            </property>
-            <property name="text">
-             <string>Editar</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="btn_excluir">
-            <property name="font">
-             <font>
-              <family>Microsoft JhengHei</family>
-              <pointsize>9</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QPushButton{
+           </property>
+           <property name="text">
+            <string>CONSULTAR</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_excluir">
+           <property name="font">
+            <font>
+             <family>Microsoft JhengHei</family>
+             <pointsize>9</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{
 	
 	background-color: rgb(200, 70, 100);
 	color: rgb(255, 255, 255);
@@ -1740,14 +1695,13 @@ QPushButton:hover{
 	color: rgb(0, 100, 150)
 
 }</string>
-            </property>
-            <property name="text">
-             <string>Excluir</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
+           </property>
+           <property name="text">
+            <string>Excluir</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
        <widget class="QTreeWidget" name="treeWidget">
         <property name="geometry">
@@ -1758,11 +1712,32 @@ QPushButton:hover{
           <height>360</height>
          </rect>
         </property>
-        <column>
-         <property name="text">
-          <string/>
-         </property>
-        </column>
+        <property name="font">
+         <font>
+          <kerning>true</kerning>
+         </font>
+        </property>
+        <property name="uniformRowHeights">
+         <bool>true</bool>
+        </property>
+        <property name="itemsExpandable">
+         <bool>true</bool>
+        </property>
+        <attribute name="headerCascadingSectionResizes">
+         <bool>true</bool>
+        </attribute>
+        <attribute name="headerMinimumSectionSize">
+         <number>40</number>
+        </attribute>
+        <attribute name="headerDefaultSectionSize">
+         <number>115</number>
+        </attribute>
+        <attribute name="headerHighlightSections">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="headerStretchLastSection">
+         <bool>false</bool>
+        </attribute>
         <column>
          <property name="text">
           <string>Nº da O.S</string>
@@ -1796,11 +1771,6 @@ QPushButton:hover{
         <column>
          <property name="text">
           <string>Valor total</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string/>
          </property>
         </column>
        </widget>

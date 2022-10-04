@@ -604,13 +604,14 @@ class Ui_MainWindow(object):
 
         self.frame_5 = QFrame(self.pg_consultar)
         self.frame_5.setObjectName(u"frame_5")
-        self.frame_5.setGeometry(QRect(22, 530, 800, 71))
+        self.frame_5.setGeometry(QRect(22, 530, 801, 70))
         self.frame_5.setStyleSheet(u"background-color: rgb(0, 100, 150);")
         self.frame_5.setFrameShape(QFrame.StyledPanel)
         self.frame_5.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_16 = QHBoxLayout(self.frame_5)
+        self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
         self.btn_consultar = QPushButton(self.frame_5)
         self.btn_consultar.setObjectName(u"btn_consultar")
-        self.btn_consultar.setGeometry(QRect(645, 25, 111, 23))
         self.btn_consultar.setFont(font2)
         self.btn_consultar.setStyleSheet(u"QPushButton{\n"
 "	\n"
@@ -625,32 +626,10 @@ class Ui_MainWindow(object):
 "	color: rgb(0, 100, 150)\n"
 "\n"
 "}")
-        self.layoutWidget = QWidget(self.frame_5)
-        self.layoutWidget.setObjectName(u"layoutWidget")
-        self.layoutWidget.setGeometry(QRect(49, 25, 158, 31))
-        self.horizontalLayout_16 = QHBoxLayout(self.layoutWidget)
-        self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
-        self.horizontalLayout_16.setContentsMargins(0, 0, 0, 0)
-        self.btn_editar = QPushButton(self.layoutWidget)
-        self.btn_editar.setObjectName(u"btn_editar")
-        self.btn_editar.setFont(font2)
-        self.btn_editar.setStyleSheet(u"QPushButton{\n"
-"	\n"
-"	background-color: rgb(100, 180, 240);\n"
-"	color: rgb(255, 255, 255);\n"
-"	\n"
-"}\n"
-"\n"
-"QPushButton:hover{\n"
-"	\n"
-"	background-color: rgb(200, 200, 200);\n"
-"	color: rgb(0, 100, 150)\n"
-"\n"
-"}")
 
-        self.horizontalLayout_16.addWidget(self.btn_editar)
+        self.horizontalLayout_16.addWidget(self.btn_consultar)
 
-        self.btn_excluir = QPushButton(self.layoutWidget)
+        self.btn_excluir = QPushButton(self.frame_5)
         self.btn_excluir.setObjectName(u"btn_excluir")
         self.btn_excluir.setFont(font2)
         self.btn_excluir.setStyleSheet(u"QPushButton{\n"
@@ -670,10 +649,18 @@ class Ui_MainWindow(object):
         self.horizontalLayout_16.addWidget(self.btn_excluir)
 
         self.treeWidget = QTreeWidget(self.pg_consultar)
-        self.treeWidget.headerItem().setText(0, "")
-        self.treeWidget.headerItem().setText(8, "")
         self.treeWidget.setObjectName(u"treeWidget")
         self.treeWidget.setGeometry(QRect(22, 160, 800, 360))
+        font6 = QFont()
+        font6.setKerning(True)
+        self.treeWidget.setFont(font6)
+        self.treeWidget.setUniformRowHeights(True)
+        self.treeWidget.setItemsExpandable(True)
+        self.treeWidget.header().setCascadingSectionResizes(True)
+        self.treeWidget.header().setMinimumSectionSize(40)
+        self.treeWidget.header().setDefaultSectionSize(115)
+        self.treeWidget.header().setHighlightSections(False)
+        self.treeWidget.header().setStretchLastSection(False)
         self.Pages.addWidget(self.pg_consultar)
         self.pg_home = QWidget()
         self.pg_home.setObjectName(u"pg_home")
@@ -681,9 +668,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.label = QLabel(self.pg_home)
         self.label.setObjectName(u"label")
-        font6 = QFont()
-        font6.setFamily(u"Montserrat Medium")
-        self.label.setFont(font6)
+        font7 = QFont()
+        font7.setFamily(u"Montserrat Medium")
+        self.label.setFont(font7)
         self.label.setStyleSheet(u"background-color: rgb(0, 100, 150);")
 
         self.verticalLayout_3.addWidget(self.label)
@@ -714,12 +701,12 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.label_12 = QLabel(self.pg_cadastro)
         self.label_12.setObjectName(u"label_12")
-        font7 = QFont()
-        font7.setFamily(u"Microsoft JhengHei")
-        font7.setPointSize(20)
-        font7.setBold(True)
-        font7.setWeight(75)
-        self.label_12.setFont(font7)
+        font8 = QFont()
+        font8.setFamily(u"Microsoft JhengHei")
+        font8.setPointSize(20)
+        font8.setBold(True)
+        font8.setWeight(75)
+        self.label_12.setFont(font8)
         self.label_12.setStyleSheet(u"background-color: rgb(0, 100, 150);\n"
 "color: rgb(255, 255, 255);")
         self.label_12.setAlignment(Qt.AlignCenter)
@@ -728,12 +715,12 @@ class Ui_MainWindow(object):
 
         self.label_4 = QLabel(self.pg_cadastro)
         self.label_4.setObjectName(u"label_4")
-        font8 = QFont()
-        font8.setFamily(u"Microsoft JhengHei")
-        font8.setPointSize(11)
-        font8.setBold(True)
-        font8.setWeight(75)
-        self.label_4.setFont(font8)
+        font9 = QFont()
+        font9.setFamily(u"Microsoft JhengHei")
+        font9.setPointSize(11)
+        font9.setBold(True)
+        font9.setWeight(75)
+        self.label_4.setFont(font9)
         self.label_4.setStyleSheet(u"")
         self.label_4.setAlignment(Qt.AlignCenter)
 
@@ -762,10 +749,10 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.label_6 = QLabel(self.pg_cadastro)
         self.label_6.setObjectName(u"label_6")
-        font9 = QFont()
-        font9.setFamily(u"Microsoft JhengHei")
-        font9.setPointSize(10)
-        self.label_6.setFont(font9)
+        font10 = QFont()
+        font10.setFamily(u"Microsoft JhengHei")
+        font10.setPointSize(10)
+        self.label_6.setFont(font10)
         self.label_6.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.horizontalLayout_5.addWidget(self.label_6)
@@ -784,7 +771,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
         self.label_7 = QLabel(self.pg_cadastro)
         self.label_7.setObjectName(u"label_7")
-        self.label_7.setFont(font9)
+        self.label_7.setFont(font10)
         self.label_7.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.horizontalLayout_6.addWidget(self.label_7)
@@ -804,7 +791,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
         self.label_8 = QLabel(self.pg_cadastro)
         self.label_8.setObjectName(u"label_8")
-        self.label_8.setFont(font9)
+        self.label_8.setFont(font10)
         self.label_8.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.horizontalLayout_7.addWidget(self.label_8)
@@ -824,7 +811,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.label_9 = QLabel(self.pg_cadastro)
         self.label_9.setObjectName(u"label_9")
-        self.label_9.setFont(font9)
+        self.label_9.setFont(font10)
         self.label_9.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
         self.horizontalLayout_3.addWidget(self.label_9)
@@ -949,7 +936,7 @@ class Ui_MainWindow(object):
         self.cb_tipo.setItemText(0, QCoreApplication.translate("MainWindow", u"Reparo", None))
         self.cb_tipo.setItemText(1, QCoreApplication.translate("MainWindow", u"Substitui\u00e7\u00e3o", None))
 
-        self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"GroupBox", None))
+        self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"Op\u00e7\u00f5es de consulta", None))
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"N\u00famero da O.S", None))
         self.label_17.setText(QCoreApplication.translate("MainWindow", u"N\u00famero de patrim\u00f4nio", None))
         self.label_19.setText(QCoreApplication.translate("MainWindow", u"Solicitante", None))
@@ -962,16 +949,15 @@ class Ui_MainWindow(object):
         self.label_16.setText(QCoreApplication.translate("MainWindow", u"Equipamento", None))
         self.label_20.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><span style=\" color:#ffffff;\">AAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span></p></body></html>", None))
         self.btn_consultar.setText(QCoreApplication.translate("MainWindow", u"CONSULTAR", None))
-        self.btn_editar.setText(QCoreApplication.translate("MainWindow", u"Editar", None))
         self.btn_excluir.setText(QCoreApplication.translate("MainWindow", u"Excluir", None))
         ___qtreewidgetitem = self.treeWidget.headerItem()
-        ___qtreewidgetitem.setText(7, QCoreApplication.translate("MainWindow", u"Valor total", None));
-        ___qtreewidgetitem.setText(6, QCoreApplication.translate("MainWindow", u"Status", None));
-        ___qtreewidgetitem.setText(5, QCoreApplication.translate("MainWindow", u"Emiss\u00e3o", None));
-        ___qtreewidgetitem.setText(4, QCoreApplication.translate("MainWindow", u"Equipamento", None));
-        ___qtreewidgetitem.setText(3, QCoreApplication.translate("MainWindow", u"N\u00ba do patrim\u00f4nio", None));
-        ___qtreewidgetitem.setText(2, QCoreApplication.translate("MainWindow", u"Solicitante", None));
-        ___qtreewidgetitem.setText(1, QCoreApplication.translate("MainWindow", u"N\u00ba da O.S", None));
+        ___qtreewidgetitem.setText(6, QCoreApplication.translate("MainWindow", u"Valor total", None));
+        ___qtreewidgetitem.setText(5, QCoreApplication.translate("MainWindow", u"Status", None));
+        ___qtreewidgetitem.setText(4, QCoreApplication.translate("MainWindow", u"Emiss\u00e3o", None));
+        ___qtreewidgetitem.setText(3, QCoreApplication.translate("MainWindow", u"Equipamento", None));
+        ___qtreewidgetitem.setText(2, QCoreApplication.translate("MainWindow", u"N\u00ba do patrim\u00f4nio", None));
+        ___qtreewidgetitem.setText(1, QCoreApplication.translate("MainWindow", u"Solicitante", None));
+        ___qtreewidgetitem.setText(0, QCoreApplication.translate("MainWindow", u"N\u00ba da O.S", None));
         self.label.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body></p><p align=\"center\"><p align=\"center\"><img src=\"SIMAP.png\" width=\"300\"><p align=\"center\"><span style=\" font-size:20pt; color:#ffffff;\">Sistema de Manuten\u00e7\u00e3o de Patrim\u00f4nio</span><br/></p></body></html>", None))
         self.btn_pg_cadastro.setText(QCoreApplication.translate("MainWindow", u"Cadastrar Usu\u00e1rio", None))
         self.label_12.setText(QCoreApplication.translate("MainWindow", u"Tela de Cadastro", None))
