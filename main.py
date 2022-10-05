@@ -117,29 +117,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def save_os(self):
         num_os = self.txt_num_os.text()
         status = "Fechada" if self.cb_close.isChecked() else "Aberta"
-        dt_os = self.dt_emissao.text()
-        hr_os = self.dt_horario.text()
-        # formatting date to save in database
-        string_date = dt_os + " " + hr_os
-        os_datetime_obj = datetime.strptime(string_date, "%d/%m/%y %H:%M")
-        dt_hr_os = os_datetime_obj.strftime("%Y-%m-%d %H:%M:%S")
-
-        dt_end = self.dt_fechamento.text()
-        if dt_end and len(dt_end) > 0:
-            dt_end = datetime.strptime(dt_end, "%d/%m/%y %H:%M")
-            dt_end = dt_end.strftime("%Y-%m-%d %H:%M:%S")
-
+        dt_os = self.dt_emissao.date().toPython()
+        hr_os = self.dt_horario.time().toPython()
+        dt_end = self.dt_fechamento.dateTime()
         customer = self.txt_solicitante.text()
         technical_manager = self.txt_responsavel.text()
         service_type = self.cb_tipo.currentText()
-        service_start_dt = self.dt_inicio.text()
-        if service_start_dt and len(service_start_dt) > 0:
-            service_start_dt = datetime.strptime(service_start_dt, "%d/%m/%y %H:%M")
-            service_start_dt = service_start_dt.strftime("%Y-%m-%d %H:%M:%S")
-        service_end_dt = self.dt_termino.text()
-        if service_end_dt and len(service_end_dt) > 0:
-            service_end_dt = datetime.strptime(service_end_dt, "%d/%m/%y %H:%M")
-            service_end_dt = service_end_dt.strftime("%Y-%m-%d %H:%M:%S")
+        service_start_dt = self.dt_inicio.dateTime()
+        service_end_dt = self.dt_termino.dateTime()
         service_description = self.plainTextEdit.toPlainText()
         equip_number = self.txt_num_patrimonio.text()
         equip_description = self.txt_equipamento.text()
@@ -153,6 +138,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         part_qtd = self.sb_qtde.text()
         part_price = self.txt_preco.text()
         part_total = self.txt_valor.text()
+
+        # formatting date to save in database
+        dt_hr_os = str(dt_os) + " " + str(hr_os)
+        if dt_end:
+            dt_end = dt_end.toPython()
+        if service_start_dt:
+            service_start_dt = service_start_dt.toPython()
+        if service_end_dt:
+            service_end_dt = service_end_dt.toPython()
 
         os_data = (
             status,
@@ -201,8 +195,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         equip_description = self.txt_equipamento_consulta.text()
         customer = self.txt_solicitante_consulta.text()
         status = self.cb_status_consulta.currentText()
-        dt_os_start = self.dt_periodo_consulta.text()
-        dt_os_end = self.dateEdit_2.text()
+        dt_os_start = self.dt_periodo_consulta.date()
+        dt_os_end = self.dateEdit_2.date()
 
         # validate data
         num_os = num_os if num_os else None
@@ -211,19 +205,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         customer = customer if customer else None
         status = status if status else None
         if dt_os_start:
-            dt_os_start = datetime.strptime(dt_os_start, "%d/%m/%y")
-            dt_os_start = dt_os_start.strftime("%Y-%m-%d %H:%M:%S")
+            dt_os_start = str(dt_os_start.toPython()) + " 00:00:00"
         else:
             dt_os_start = None
         if dt_os_end:
-            dt_os_end = datetime.strptime(dt_os_end, "%d/%m/%y")
-            dt_os_end = dt_os_end.strftime("%Y-%m-%d %H:%M:%S")
+            dt_os_end = str(dt_os_end.toPython()) + " 23:59:59"
         else:
             dt_os_end = None
 
         # Open db connection
         db_conn = self.db_instance.create_connection()
-
         # Call method to fetch all OS by filter options
         os_list = Os(db_conn).get_all_os(
             id=num_os,
@@ -238,6 +229,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # First clear current table then list filtered items
         self.treeWidget.clear()
+
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Warning)
+        msg.setWindowTitle("Consultar Ordens de serviço")
+        if len(os_list) > 0:
+            msg.setText("Busca realizada com sucesso!")
+        else:
+            msg.setText("Nenhuma ordem de serviço encontrada!")
+        msg.exec()
+
         items = []
         for os in os_list:
             os_dt = os["created_at"]
@@ -245,7 +246,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             os_dt = os_dt.strftime("%d/%m/%Y")
             item = QTreeWidgetItem(
                 [
-                    "",
                     str(os["id"]),
                     os["customer"],
                     os["equip_inventory_number"],
@@ -260,21 +260,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def remove_os(self):
         selected_os = self.treeWidget.currentItem()
-        os_num = selected_os.text(1)
+        os_num = selected_os.text(0)
         if os_num:
             db_conn = self.db_instance.create_connection()
-            Os(db_conn).delete_os(os_num)
+            result = Os(db_conn).delete_os(os_num)
             self.db_instance.close_connection(db_conn)
-        self.list_os()
 
-    def edit_os(self):
-        selected_os = self.treeWidget.currentItem()
-        os_num = selected_os.text(1)
-        if os_num:
-            db_conn = self.db_instance.create_connection()
-            os_instance = Os(db_conn).get_os(os_num)
-            self.db_instance.close_connection(db_conn)
-        self.Pages.setCurrentWidget(self.pg_os)
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Warning)
+        msg.setWindowTitle("Remover Ordem de serviço")
+        if result:
+            msg.setText("Ordem de serviço removida com sucesso!")
+        else:
+            msg.setText("Não foi possível remover esta ordem de serviço!")
+        msg.exec()
+
+        self.list_os()
 
 
 if __name__ == "__main__":

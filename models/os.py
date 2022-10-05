@@ -57,10 +57,10 @@ class Os:
             sql = "DELETE FROM os WHERE id=?"
             cursor = self.connection.cursor()
             cursor.execute(sql, (os_id,))
-
             self.connection.commit()
+            return True, ""
         except Error as e:
-            return "Não foi possível executar a consulta. " + str(e)
+            return False, "Não foi possível executar a consulta. " + str(e)
 
     def get_all_os(
         self,
@@ -88,15 +88,23 @@ class Os:
                 if id:
                     sql += "id=" + id + " AND "
                 if equip_inventory_number:
-                    sql += "equip_inventory_number=" + id + " AND "
+                    sql += (
+                        "equip_inventory_number='" + equip_inventory_number + "' AND "
+                    )
                 if equip_name:
-                    sql += "equip_name='" + equip_name + "' AND "
+                    sql += "UPPER(equip_name) LIKE '%" + equip_name.upper() + "%' AND "
                 if customer:
-                    sql += "customer='" + customer + "' AND "
+                    sql += "UPPER(customer) LIKE '%" + customer.upper() + "%' AND "
                 if status:
                     sql += "status='" + status + "' AND "
                 if dt_start and dt_end:
-                    sql += "created_at BETWEEN '" + dt_start + "' AND '" + dt_end + "'"
+                    sql += (
+                        "created_at BETWEEN '"
+                        + str(dt_start)
+                        + "' AND '"
+                        + str(dt_end)
+                        + "'"
+                    )
                 if sql.endswith(" AND "):
                     sql = sql[:-5]
 
@@ -106,7 +114,8 @@ class Os:
             results = cursor.fetchall()
             return list(map(lambda x: dict(x), results))
         except Error as e:
-            return "Não foi possível executar a consulta. " + str(e)
+            print("Não foi possível executar a consulta. " + str(e))
+            return []
 
     def get_os(self, os_id=None):
         try:
